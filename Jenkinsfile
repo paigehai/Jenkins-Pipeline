@@ -1,5 +1,13 @@
 pipeline {
     agent any
+
+    environment {
+        PROJECT_NAME = "${env.JOB_NAME}"
+        BUILD_NUMBER = "${env.BUILD_NUMBER}"
+        BUILD_STATUS = "${currentBuild.currentResult}"
+        BUILD_URL = "${env.BUILD_URL}"
+    }
+
     stages {
         stage('Build') {
             steps {
@@ -8,14 +16,32 @@ pipeline {
             }
             post {
                 success {
-                    mail to: "s220577892@gmail.com",
-                         subject: "Build Status Email",
-                         body: "Build was successful."
+                    emailext to: "s220577892@gmail.com",
+                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - SUCCESS",
+                             body: """
+                             Hello, below is your test report.
+                             
+                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - SUCCESS
+                             
+                             Check console output at ${BUILD_URL} to view the results.
+                             
+                             Thanks,
+                             Automation Team
+                             """
                 }
                 failure {
-                    mail to: "s220577892@gmail.com",
-                         subject: "Build Failure Email",
-                         body: "Build failed. Check Jenkins logs for more details."
+                    emailext to: "s220577892@gmail.com",
+                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - FAILURE",
+                             body: """
+                             Hello, below is your test report.
+                             
+                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - FAILURE
+                             
+                             Check console output at ${BUILD_URL} to view the results.
+                             
+                             Thanks,
+                             Automation Team
+                             """
                 }
             }
         }
@@ -23,22 +49,43 @@ pipeline {
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Running Unit and Integration Tests...'
-                // Generate dummy log for unit and integration tests
-                writeFile file: 'test-logs.txt', text: 'Unit and Integration Tests Log\nTimestamp: ${new Date()}'
+                script {
+                    def timestamp = new Date().format("yyyy-MM-dd HH:mm:ss")
+                    writeFile file: 'test-logs.txt', text: "Unit and Integration Tests Log\nTimestamp: ${timestamp}"
+                }
             }
             post {
-                success {
+                always {
                     archiveArtifacts artifacts: 'test-logs.txt', allowEmptyArchive: true
+                }
+                success {
                     emailext to: "s220577892@gmail.com",
-                             subject: "Test Status Email",
-                             body: "Unit and Integration Tests were successful. See attached logs.",
+                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - TESTS SUCCESS",
+                             body: """
+                             Hello, below is your test report.
+                             
+                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - TESTS SUCCESS
+                             
+                             Check console output at ${BUILD_URL} to view the results.
+                             
+                             Thanks,
+                             Automation Team
+                             """,
                              attachmentsPattern: 'test-logs.txt'
                 }
                 failure {
-                    archiveArtifacts artifacts: 'test-logs.txt', allowEmptyArchive: true
                     emailext to: "s220577892@gmail.com",
-                             subject: "Test Failure Email",
-                             body: "Unit and Integration Tests failed. Check the attached logs for more details.",
+                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - TESTS FAILURE",
+                             body: """
+                             Hello, below is your test report.
+                             
+                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - TESTS FAILURE
+                             
+                             Check console output at ${BUILD_URL} to view the results.
+                             
+                             Thanks,
+                             Automation Team
+                             """,
                              attachmentsPattern: 'test-logs.txt'
                 }
             }
@@ -54,22 +101,43 @@ pipeline {
         stage('Security Scan') {
             steps {
                 echo 'Scanning for Vulnerabilities...'
-                // Generate dummy log for security scan
-                writeFile file: 'security-scan-logs.txt', text: 'Security Scan Log\nTimestamp: ${new Date()}'
+                script {
+                    def timestamp = new Date().format("yyyy-MM-dd HH:mm:ss")
+                    writeFile file: 'security-scan-logs.txt', text: "Security Scan Log\nTimestamp: ${timestamp}"
+                }
             }
             post {
-                success {
+                always {
                     archiveArtifacts artifacts: 'security-scan-logs.txt', allowEmptyArchive: true
+                }
+                success {
                     emailext to: "s220577892@gmail.com",
-                             subject: "Security Scan Status Email",
-                             body: "Security scan completed successfully. See attached logs.",
+                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - SECURITY SCAN SUCCESS",
+                             body: """
+                             Hello, below is your security scan report.
+                             
+                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - SECURITY SCAN SUCCESS
+                             
+                             Check console output at ${BUILD_URL} to view the results.
+                             
+                             Thanks,
+                             Automation Team
+                             """,
                              attachmentsPattern: 'security-scan-logs.txt'
                 }
                 failure {
-                    archiveArtifacts artifacts: 'security-scan-logs.txt', allowEmptyArchive: true
                     emailext to: "s220577892@gmail.com",
-                             subject: "Security Scan Failure Email",
-                             body: "Security scan failed. Check the attached logs for more details.",
+                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - SECURITY SCAN FAILURE",
+                             body: """
+                             Hello, below is your security scan report.
+                             
+                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - SECURITY SCAN FAILURE
+                             
+                             Check console output at ${BUILD_URL} to view the results.
+                             
+                             Thanks,
+                             Automation Team
+                             """,
                              attachmentsPattern: 'security-scan-logs.txt'
                 }
             }
@@ -98,22 +166,41 @@ pipeline {
     }
 
     post {
+        always {
+            script {
+                def timestamp = new Date().format("yyyy-MM-dd HH:mm:ss")
+                writeFile file: 'pipeline-status-logs.txt', text: "Pipeline Status Log\nTimestamp: ${timestamp}"
+            }
+            archiveArtifacts artifacts: 'pipeline-status-logs.txt', allowEmptyArchive: true
+        }
         success {
-            echo 'Pipeline Completed Successfully!'
-            // Generate dummy log for pipeline status
-            writeFile file: 'pipeline-status-logs.txt', text: 'Pipeline Status Log\nTimestamp: ${new Date()}'
             emailext to: "s220577892@gmail.com",
-                     subject: "Pipeline Status Email",
-                     body: "Pipeline completed successfully. See attached logs.",
+                     subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - PIPELINE SUCCESS",
+                     body: """
+                     Hello, below is your pipeline report.
+                     
+                     ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - PIPELINE SUCCESS
+                     
+                     Check console output at ${BUILD_URL} to view the results.
+                     
+                     Thanks,
+                     Automation Team
+                     """,
                      attachmentsPattern: 'pipeline-status-logs.txt'
         }
         failure {
-            echo 'Pipeline Failed!'
-            // Generate dummy log for pipeline status
-            writeFile file: 'pipeline-status-logs.txt', text: 'Pipeline Status Log\nTimestamp: ${new Date()}'
             emailext to: "s220577892@gmail.com",
-                     subject: "Pipeline Failure Email",
-                     body: "The pipeline failed. Please check the attached logs for more details.",
+                     subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - PIPELINE FAILURE",
+                     body: """
+                     Hello, below is your pipeline report.
+                     
+                     ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - PIPELINE FAILURE
+                     
+                     Check console output at ${BUILD_URL} to view the results.
+                     
+                     Thanks,
+                     Automation Team
+                     """,
                      attachmentsPattern: 'pipeline-status-logs.txt'
         }
     }
