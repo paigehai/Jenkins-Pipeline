@@ -23,18 +23,23 @@ pipeline {
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Running Unit and Integration Tests...'
-                // Run unit and integration tests using JUnit
+            // Generate dummy log for demonstration
+                writeFile file: 'test-logs.txt', text: 'Unit and Integration Tests Log\nTimestamp: ${new Date()}'
             }
             post {
                 success {
-                    mail to: "s220577892@gmail.com",
-                    subject: "Test Status Email",
-                    body: "Unit and Integration Tests were successful."
+                    archiveArtifacts artifacts: 'test-logs.txt', allowEmptyArchive: true
+                    emailext attachLog: true,
+                              to: "s220577892@gmail.com",
+                              subject: "Test Status Email",
+                              body: "Unit and Integration Tests were successful. See attached logs."
                 }
                 failure {
-                    mail to: "s220577892@gmail.com",
-                    subject: "Test Failure Email",
-                    body: "Unit and Integration Tests failed. Check Jenkins logs for more details."
+                    archiveArtifacts artifacts: 'test-logs.txt', allowEmptyArchive: true
+                    emailext attachLog: true,
+                              to: "s220577892@gmail.com",
+                              subject: "Test Failure Email",
+                              body: "Unit and Integration Tests failed. Check the attached logs for more details."
                 }
             }
         }
@@ -42,32 +47,30 @@ pipeline {
         stage('Code Analysis') {
             steps {
                 echo 'Analysing Code...'
-                // Analyse code using ESLint
-            }
-            post {
-                failure {
-                    mail to: "s220577892@gmail.com",
-                    subject: "Code Analysis Failure Email",
-                    body: "Code analysis failed. Check Jenkins logs for more details."
-                }
+                // Code analysis steps
             }
         }
 
         stage('Security Scan') {
             steps {
                 echo 'Scanning for Vulnerabilities...'
-                // Perform security scan using OWASP ZAP
+            // Generate dummy log for demonstration
+                writeFile file: 'security-scan-logs.txt', text: 'Security Scan Log\nTimestamp: ${new Date()}'
             }
             post {
                 success {
-                    mail to: "s220577892@gmail.com",
-                    subject: "Security Scan Status Email",
-                    body: "Security scan completed successfully."
+                    archiveArtifacts artifacts: 'security-scan-logs.txt', allowEmptyArchive: true
+                    emailext attachLog: true,
+                              to: "s220577892@gmail.com",
+                              subject: "Security Scan Status Email",
+                              body: "Security scan completed successfully. See attached logs."
                 }
                 failure {
-                    mail to: "s220577892@gmail.com",
-                    subject: "Security Scan Failure Email",
-                    body: "Security scan failed. Check Jenkins logs for more details."
+                    archiveArtifacts artifacts: 'security-scan-logs.txt', allowEmptyArchive: true
+                    emailext attachLog: true,
+                              to: "s220577892@gmail.com",
+                              subject: "Security Scan Failure Email",
+                              body: "Security scan failed. Check attached logs for more details."
                 }
             }
         }
@@ -77,26 +80,12 @@ pipeline {
                 echo 'Deploying to Staging...'
                 // Deploy application to staging server (AWS EC2)
             }
-            post {
-                failure {
-                    mail to: "s220577892@gmail.com",
-                    subject: "Staging Deployment Failure Email",
-                    body: "Deployment to staging failed. Check Jenkins logs for more details."
-                }
-            }
         }
 
         stage('Integration Tests on Staging') {
             steps {
                 echo 'Running Integration Tests on Staging...'
-                // Run integration tests on staging environment using JUnit
-            }
-            post {
-                failure {
-                    mail to: "s220577892@gmail.com",
-                    subject: "Staging Integration Test Failure Email",
-                    body: "Integration tests on staging failed. Check Jenkins logs for more details."
-                }
+                // Integration tests steps
             }
         }
 
@@ -105,28 +94,27 @@ pipeline {
                 echo 'Deploying to Production...'
                 // Deploy application to production server (AWS EC2)
             }
-            post {
-                failure {
-                    mail to: "s220577892@gmail.com",
-                    subject: "Production Deployment Failure Email",
-                    body: "Deployment to production failed. Check Jenkins logs for more details."
-                }
-            }
         }
     }
 
     post {
         success {
             echo 'Pipeline Completed Successfully!'
+            // Generate dummy log for demonstration
+            writeFile file: 'pipeline-status-logs.txt', text: 'Pipeline Status Log\nTimestamp: ${new Date()}'
             mail to: "s220577892@gmail.com",
-            subject: "Pipeline Status Email",
-            body: "Pipeline completed successfully."
+                 subject: "Pipeline Status Email",
+                 body: "Pipeline completed successfully. See attached logs.",
+                 attachmentsPattern: 'pipeline-status-logs.txt'
         }
         failure {
             echo 'Pipeline Failed!'
+            // Generate dummy log for demonstration
+            writeFile file: 'pipeline-status-logs.txt', text: 'Pipeline Status Log\nTimestamp: ${new Date()}'
             mail to: "s220577892@gmail.com",
-            subject: "Pipeline Failure Email",
-            body: "The pipeline failed. Please check the Jenkins logs for more details."
+                 subject: "Pipeline Failure Email",
+                 body: "The pipeline failed. Check attached logs for more details.",
+                 attachmentsPattern: 'pipeline-status-logs.txt'
         }
     }
 }
