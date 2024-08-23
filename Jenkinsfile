@@ -17,11 +17,11 @@ pipeline {
             post {
                 success {
                     emailext to: "s220577892@gmail.com",
-                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - SUCCESS",
+                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Success",
                              body: """
                              Hello, below is your test report.
                              
-                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - SUCCESS
+                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Success
                              
                              Check console output at ${BUILD_URL} to view the results.
                              
@@ -31,11 +31,11 @@ pipeline {
                 }
                 failure {
                     emailext to: "s220577892@gmail.com",
-                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - FAILURE",
+                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Failure",
                              body: """
                              Hello, below is your test report.
                              
-                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - FAILURE
+                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Failure
                              
                              Check console output at ${BUILD_URL} to view the results.
                              
@@ -60,11 +60,11 @@ pipeline {
                 }
                 success {
                     emailext to: "s220577892@gmail.com",
-                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - TESTS SUCCESS",
+                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Tests Success",
                              body: """
                              Hello, below is your test report.
                              
-                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - TESTS SUCCESS
+                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Tests Success
                              
                              Check console output at ${BUILD_URL} to view the results.
                              
@@ -75,11 +75,11 @@ pipeline {
                 }
                 failure {
                     emailext to: "s220577892@gmail.com",
-                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - TESTS FAILURE",
+                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Tests Failure",
                              body: """
                              Hello, below is your test report.
                              
-                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - TESTS FAILURE
+                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Tests Failure
                              
                              Check console output at ${BUILD_URL} to view the results.
                              
@@ -112,11 +112,11 @@ pipeline {
                 }
                 success {
                     emailext to: "s220577892@gmail.com",
-                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - SECURITY SCAN SUCCESS",
+                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Security Scan Success",
                              body: """
                              Hello, below is your security scan report.
                              
-                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - SECURITY SCAN SUCCESS
+                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Security Scan Success
                              
                              Check console output at ${BUILD_URL} to view the results.
                              
@@ -127,11 +127,11 @@ pipeline {
                 }
                 failure {
                     emailext to: "s220577892@gmail.com",
-                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - SECURITY SCAN FAILURE",
+                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Security Scan Failure",
                              body: """
                              Hello, below is your security scan report.
                              
-                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - SECURITY SCAN FAILURE
+                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Security Scan Failure
                              
                              Check console output at ${BUILD_URL} to view the results.
                              
@@ -175,11 +175,11 @@ pipeline {
         }
         success {
             emailext to: "s220577892@gmail.com",
-                     subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - PIPELINE SUCCESS",
+                     subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Pipeline Success",
                      body: """
                      Hello, below is your pipeline report.
                      
-                     ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - PIPELINE SUCCESS
+                     ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Pipeline Success
                      
                      Check console output at ${BUILD_URL} to view the results.
                      
@@ -190,11 +190,11 @@ pipeline {
         }
         failure {
             emailext to: "s220577892@gmail.com",
-                     subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - PIPELINE FAILURE",
+                     subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Pipeline Failure",
                      body: """
                      Hello, below is your pipeline report.
                      
-                     ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - PIPELINE FAILURE
+                     ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - PIPELINE Failure
                      
                      Check console output at ${BUILD_URL} to view the results.
                      
