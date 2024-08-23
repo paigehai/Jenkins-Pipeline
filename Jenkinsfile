@@ -51,7 +51,7 @@ pipeline {
                 echo 'Running Unit and Integration Tests...'
                 script {
                     def timestamp = new Date().format("dd-MM-yyyy HH:mm:ss")
-                    writeFile file: 'test-logs.txt', text: "Unit and Integration Tests Log\nTimestamp: ${timestamp} - ${status}"
+                    writeFile file: 'test-logs.txt', text: "Unit and Integration Tests Log\nTimestamp: ${timestamp}"
                 }
             }
             post {
@@ -103,7 +103,7 @@ pipeline {
                 echo 'Scanning for Vulnerabilities...'
                 script {
                     def timestamp = new Date().format("dd-MM-yyyy HH:mm:ss")
-                    writeFile file: 'security-scan-logs.txt', text: "Security Scan Log\nTimestamp: ${timestamp} - ${status}"
+                    writeFile file: 'security-scan-logs.txt', text: "Security Scan Log\nTimestamp: ${timestamp}"
                 }
             }
             post {
@@ -169,7 +169,7 @@ pipeline {
         always {
             script {
                 def timestamp = new Date().format("dd-MM-yyyy HH:mm:ss")
-                writeFile file: 'pipeline-status-logs.txt', text: "Pipeline Status Log\nTimestamp: ${timestamp} - ${status}"
+                writeFile file: 'pipeline-status-logs.txt', text: "Pipeline Status Log\nTimestamp: ${timestamp}"
             }
             archiveArtifacts artifacts: 'pipeline-status-logs.txt', allowEmptyArchive: true
         }
