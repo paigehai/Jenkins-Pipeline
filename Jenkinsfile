@@ -50,8 +50,8 @@ pipeline {
             steps {
                 echo 'Running Unit and Integration Tests...'
                 script {
-                    def timestamp = new Date().format("yyyy-MM-dd HH:mm:ss")
-                    writeFile file: 'test-logs.txt', text: "Unit and Integration Tests Log\nTimestamp: ${timestamp}"
+                    def timestamp = new Date().format("dd-MM-yyyy HH:mm:ss")
+                    writeFile file: 'test-logs.txt', text: "Unit and Integration Tests Log\nTimestamp: ${timestamp} - ${status}"
                 }
             }
             post {
@@ -102,8 +102,8 @@ pipeline {
             steps {
                 echo 'Scanning for Vulnerabilities...'
                 script {
-                    def timestamp = new Date().format("yyyy-MM-dd HH:mm:ss")
-                    writeFile file: 'security-scan-logs.txt', text: "Security Scan Log\nTimestamp: ${timestamp}"
+                    def timestamp = new Date().format("dd-MM-yyyy HH:mm:ss")
+                    writeFile file: 'security-scan-logs.txt', text: "Security Scan Log\nTimestamp: ${timestamp} - ${status}"
                 }
             }
             post {
@@ -168,8 +168,8 @@ pipeline {
     post {
         always {
             script {
-                def timestamp = new Date().format("yyyy-MM-dd HH:mm:ss")
-                writeFile file: 'pipeline-status-logs.txt', text: "Pipeline Status Log\nTimestamp: ${timestamp}"
+                def timestamp = new Date().format("dd-MM-yyyy HH:mm:ss")
+                writeFile file: 'pipeline-status-logs.txt', text: "Pipeline Status Log\nTimestamp: ${timestamp} - ${status}"
             }
             archiveArtifacts artifacts: 'pipeline-status-logs.txt', allowEmptyArchive: true
         }
