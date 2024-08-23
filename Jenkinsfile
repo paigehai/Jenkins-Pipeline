@@ -14,36 +14,6 @@ pipeline {
                 echo 'Building...'
                 // Build code using Maven
             }
-            post {
-                success {
-                    emailext to: "s220577892@gmail.com",
-                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Success",
-                             body: """
-                             Hello, below is your test report.
-                             
-                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Success
-                             
-                             Check console output at ${BUILD_URL} to view the results.
-                             
-                             Thanks,
-                             Automation Team
-                             """
-                }
-                failure {
-                    emailext to: "s220577892@gmail.com",
-                             subject: "${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Failure",
-                             body: """
-                             Hello, below is your test report.
-                             
-                             ${PROJECT_NAME} - Build # ${BUILD_NUMBER} - Failure
-                             
-                             Check console output at ${BUILD_URL} to view the results.
-                             
-                             Thanks,
-                             Automation Team
-                             """
-                }
-            }
         }
 
         stage('Unit and Integration Tests') {
